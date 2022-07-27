@@ -24,16 +24,16 @@
     <main>
       <section class="filtersContainer">
         <div id="botoesContainer">
-          <button class="estiloGeralBotoes estiloGeralBotoes--filter">
+          <button id="todosProdutos" class="estiloGeralBotoes estiloGeralBotoes--filter" value="todosProdutos">
             Todos Produtos
           </button>
-          <button class="estiloGeralBotoes estiloGeralBotoes--filter">
+          <button id="hortifruti" class="estiloGeralBotoes estiloGeralBotoes--filter" value="hortifruti">
             Hortifruti
           </button>
-          <button class="estiloGeralBotoes estiloGeralBotoes--filter">
+          <button id="panificadora" class="estiloGeralBotoes estiloGeralBotoes--filter" value="panificadora">
             Panificadora
           </button>
-          <button class="estiloGeralBotoes estiloGeralBotoes--filter">
+          <button id="laticinios" class="estiloGeralBotoes estiloGeralBotoes--filter" value="laticinios">
             Laticínios
           </button>
         </div>
@@ -44,7 +44,7 @@
             placeholder="Pesquisar por"
             class="campoBuscaPorNome"
           />
-          <button
+          <button id="btnPesquisar"
             class="estiloGeralBotoes estiloGeralBotoes--botaoBuscaPorNome"
           >
             <img src="./src/img/search.png" alt="lupa" />
@@ -56,7 +56,7 @@
             <img src="./src/img/alert-circle.png" alt="exclamação de alerta">
             <p>Valor total dos produtos da sessão selecionada</p>
         </div>
-        <span>R$ 0.00</span>
+        <span id="totalDacompra">R$ 0.00</span>
       </section>
       <!-- CONTAINER DE PRODUTOS -->
       <section class="containerVitrine">
@@ -67,18 +67,17 @@
                     Você pode remover esses comentários depois que fizer a construção pelo DOM -->
                     
             
-                    <!-- <li>
-                        <img src="./src/img/maça.png" alt="Imagem maçã">
+                 <!--     <li>
+                        <img src="./src/img/banana.png" alt="Imagem maçã">
                         <h3>Maçã</h3>
                         <span>Hortifruti</span>
                         <p>R$ 2.00</p>
-                    </li> -->
-                    
+                    </li>  -->
                 </ul>
         </div>
       </section>
     </main>
     <script src="src/js/dataProdutos.js"></script>
-    <script src="./scriptDemo.js"></script>
+    <script src="./src/js/script.js"></script>
   </body>
 </html>
