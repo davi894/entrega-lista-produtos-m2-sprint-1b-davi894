@@ -113,23 +113,28 @@ function filtroParaOSomatorio(somaFiltro) {
 
 function valorPesquisa() {
 
-    let btnPesquisa = document.getElementById("btnPesquisar")
-    console.log(btnPesquisa)
     let input = document.querySelector(".campoBuscaPorNome")
-    console.log(input)
 
     input.addEventListener("keyup", (event) => {
+
+        let arrayInputValue = []
+
         let input = event.target
-        let inputValue = input.value.toLowerCase()
+
+        let inputValue = input.value.toLowerCase().trim()
+        arrayInputValue.push(inputValue)
 
         let ul = document.querySelector("ul")
         ul.innerHTML = ""
         let arrayPesquisa = []
         for (let i = 0; i < produtos.length; i++) {
             let produtosNome = produtos[i].nome.toLowerCase()
-            console.log(produtosNome)
-            if (inputValue.includes(produtosNome)) {
+
+            if (inputValue.includes(produtosNome) || produtosNome.includes(arrayInputValue)) {
                 arrayPesquisa.push(produtos[i])
+            }
+            if (inputValue == "") {
+                return criandoCartoes(produtos)
             }
         }
         criandoCartoes(arrayPesquisa)
@@ -137,5 +142,44 @@ function valorPesquisa() {
     })
 }
 valorPesquisa()
+
+function bntpesquisa() {
+
+    let btnPesquisa = document.getElementById("btnPesquisar")
+
+    btnPesquisa.addEventListener("click", function (event) {
+
+        let ul = document.querySelector("ul")
+        ul.innerHTML = ""
+        let ulDois = document.querySelector("ul")
+        let arrayLetsrasValueInput = []
+        let input = document.querySelector(".campoBuscaPorNome")
+        let inputValue = input.value.toLowerCase().trim()
+
+        arrayLetsrasValueInput.push(inputValue)
+        console.log(arrayLetsrasValueInput)
+        let arrayBtnPesquisa = []
+
+        let bntInputClicado = event.target
+
+        for (let i = 0; i < produtos.length; i++) {
+
+            let produtosNome = produtos[i].nome.toLowerCase()
+
+            if (bntInputClicado && inputValue.includes(produtosNome) || produtosNome.includes(arrayLetsrasValueInput)) {
+                arrayBtnPesquisa.push(produtos[i])
+            } else {
+                return ulDois && criandoCartoes(produtos) && filtroParaOSomatorio(produtos)
+            }
+
+        }
+        criandoCartoes(arrayBtnPesquisa)
+        filtroParaOSomatorio(arrayBtnPesquisa)
+    })
+}
+bntpesquisa()
+
+
+
 
 
