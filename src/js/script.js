@@ -111,7 +111,7 @@ function filtroParaOSomatorio(somaFiltro) {
     return spanPreco.innerText = `R$ ${somatorioDoFiltro},00`
 }
 
-function valorPesquisa() {
+ function valorPesquisa() {
 
     let input = document.querySelector(".campoBuscaPorNome")
 
@@ -141,7 +141,7 @@ function valorPesquisa() {
         filtroParaOSomatorio(arrayPesquisa)
     })
 }
-valorPesquisa()
+valorPesquisa() 
 
 function bntpesquisa() {
 
@@ -168,7 +168,8 @@ function bntpesquisa() {
 
             if (bntInputClicado && inputValue.includes(produtosNome) || produtosNome.includes(arrayLetsrasValueInput)) {
                 arrayBtnPesquisa.push(produtos[i])
-            } else {
+            } 
+            if(bntInputClicado && inputValue == "" ) {
                 return ulDois && criandoCartoes(produtos) && filtroParaOSomatorio(produtos)
             }
 
