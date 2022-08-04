@@ -105,7 +105,6 @@ function ulcarrinhoCompras(redezinadoUlCarrinho) {
         button.id = element.id;
 
         button.addEventListener("click", (event) => {
-
             arrayBtnClicadoCarrinho.forEach((element, i) => {
                 if (event.target.id == element.id) {
                     arrayBtnClicadoCarrinho.splice(i, 1);
