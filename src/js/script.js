@@ -1,186 +1,199 @@
 // seu código aqui
 
-function criandoCartoes(ProdutosMostrados) {
+let arrayBtnClicadoCarrinho = []
 
-    let ul = document.querySelector("ul")
+function renderizarUl(arrayProdutos) {
 
-    for (let i = 0; i < ProdutosMostrados.length; i++) {
+    let ul = document.querySelector("ul");
 
-        let li = document.createElement("li")
+    arrayProdutos.forEach(element => {
 
-        let img = document.createElement("img")
-        img.src = ProdutosMostrados[i].img
+        let li = document.createElement("li");
 
-        let h3 = document.createElement("h3")
-        h3.innerText = ProdutosMostrados[i].nome
+        let img = document.createElement("img");
+        img.src = element.img;
 
-        let span = document.createElement("span")
-        span.innerText = ProdutosMostrados[i].secao
+        let h3 = document.createElement("h3");
+        h3.innerText = element.nome;
 
-        let p = document.createElement("p")
-        p.innerText = `R$ ${ProdutosMostrados[i].preco},00`
+        let spanSecao = document.createElement("span");
+        spanSecao.innerText = element.secao;
 
-        li.append(img, h3, span, p)
+        let pNutrientes = document.createElement("p");
+        pNutrientes.innerText = element.componentes;
 
-        ul.appendChild(li)
-    }
-    filtroParaOSomatorio(produtos)
+        let pPreco = document.createElement("p");
+        pPreco.innerText = `R$ ${element.preco}`;
 
-    return ul
+        let button = document.createElement("button");
+        button.innerText = "COMPRAR";
+        button.classList.add("btnCompra");
+        button.id = element.id;
+
+        button.addEventListener("click", function (event) {
+            produtos.forEach((element) => {
+                if (event.target.id == element.id) {
+                    arrayBtnClicadoCarrinho.push(element);
+                    ulcarrinhoCompras(arrayBtnClicadoCarrinho);
+                    filtroParaOSomatorioCarrinho(arrayBtnClicadoCarrinho);
+                }
+            })
+        })
+        li.append(img, h3, spanSecao, pNutrientes, pPreco, button);
+        ul.appendChild(li);
+    });
+   
+    return ul;
 }
-criandoCartoes(produtos)
-
-function todosOsProdutos(produtosTotais) {
-
-    let precoTotalProdutos = 0
-
-    for (let i = 0; i < produtosTotais.length; i++) {
-        precoTotalProdutos += produtosTotais[i].preco
-    }
-
-    return precoTotalProdutos
-}
-todosOsProdutos(produtos)
+renderizarUl(produtos);
 
 document.getElementById("botoesContainer").addEventListener("click", (event) => {
-    let ul = document.querySelector("ul")
+    let ul = document.querySelector("ul");
 
-    let result = []
+    let result = [];
 
     if (event.target.id == "todosProdutos") {
-        ul.innerText = " "
-        criandoCartoes(produtos)
+        ul.innerText = " ";
+        renderizarUl(produtos);
         for (let i = 0; i < produtos.length; i++) {
-            result.push(produtos[i])
+            result.push(produtos[i]);
         }
-
     }
     if (event.target.id == "hortifruti") {
-        ul.innerHTML = " "
+        ul.innerHTML = " ";
         result = produtos.filter(secaoFruta => secaoFruta.categoria == 'fruta');
-        criandoCartoes(result)
+        renderizarUl(result);
     }
     if (event.target.id == "panificadora") {
-        ul.innerHTML = " "
+        ul.innerHTML = " ";
         result = produtos.filter(secaoPaes => secaoPaes.categoria == 'Pães');
-        criandoCartoes(result)
+        renderizarUl(result);
     }
     if (event.target.id == "laticinios") {
-        ul.innerHTML = " "
+        ul.innerHTML = " ";
         result = produtos.filter(secaoLeite => secaoLeite.categoria == 'Leite');
-        criandoCartoes(result)
+        renderizarUl(result);
     }
-    filtroParaOSomatorio(result)
 })
 
-function barraDePesquisa() {
+function ulcarrinhoCompras(redezinadoUlCarrinho) {
 
-    let btnPesquisar = document.querySelector("#btnPesquisar")
+    let ulCarrinho = document.querySelector(".carrinhoDeCompra__ul");
 
-    btnPesquisar.addEventListener("click", function () {
+    ulCarrinho.innerHTML = " ";
 
-        let arrayPesquisa = []
+    redezinadoUlCarrinho.forEach((element) => {
 
-        let input = document.querySelector(".campoBuscaPorNome")
-        let inputValue = input.value
-        let inputTratado = inputValue.toLowerCase()
+        let li = document.createElement("li");
+        li.classList.add("carrinhoDeCompra__li");
 
-        for (let i = 0; i < produtos.length; i++) {
-            let nomeLista = produtos[i].nome
-            let nomeListaTratado = nomeLista.toLowerCase()
-            if (nomeListaTratado.includes(inputTratado)) {
-                arrayPesquisa.push(produtos[i])
-            }
-        }
-        criandoCartoes(arrayPesquisa)
+        let img = document.createElement("img");
+        img.classList.add(".carrinhoDeCompra__img");
+        img.src = element.img;
+
+        let pNomeProduto = document.createElement("p");
+        pNomeProduto.classList.add("carrinhoDeCompra__nomeProduto");
+        pNomeProduto.innerText = element.nome;
+
+        let pProdutopreco = document.createElement("p");
+        pProdutopreco.classList.add("carrinhoDeCompra__ValorProduto");
+        pProdutopreco.innerText = element.preco.replace(".", ",");
+
+        let button = document.createElement("button");
+        button.classList.add("removerProdutos");
+        button.innerText = "remover do carrinho";
+        button.id = element.id;
+
+        button.addEventListener("click", (event) => {
+
+            arrayBtnClicadoCarrinho.forEach((element, i) => {
+                if (event.target.id == element.id) {
+                    arrayBtnClicadoCarrinho.splice(i, 1);
+                    ulcarrinhoCompras(arrayBtnClicadoCarrinho);
+                    filtroParaOSomatorioCarrinho(arrayBtnClicadoCarrinho);
+                }
+            })
+        })
+        li.append(img, pNomeProduto, pProdutopreco, button);
+        ulCarrinho.appendChild(li);
     })
+
+    return ulCarrinho
 }
-barraDePesquisa()
 
-function filtroParaOSomatorio(somaFiltro) {
+function filtroParaOSomatorioCarrinho(somaFiltro) {
 
-    let spanPreco = document.querySelector("#totalDacompra")
+    let spanValor = document.querySelector(".carrinhoDeCompra__valorCompra");
 
-    let somatorioDoFiltro = 0
+    let somatorioDoFiltro = 0;
 
     for (let i = 0; i < somaFiltro.length; i++) {
 
-        somatorioDoFiltro += somaFiltro[i].preco
-    }
+        let precoProduto = somaFiltro[i].preco;
+        let conversao = parseInt(precoProduto);
 
-    return spanPreco.innerText = `R$ ${somatorioDoFiltro},00`
+        somatorioDoFiltro += conversao;
+    }
+    return spanValor.innerText = `VALOR DA COMPRA: R$ ${somatorioDoFiltro},00`;
 }
 
- function valorPesquisa() {
-
+function valorPesquisa() {
     let input = document.querySelector(".campoBuscaPorNome")
 
     input.addEventListener("keyup", (event) => {
 
-        let arrayInputValue = []
+        let input = event.target;
 
-        let input = event.target
+        let inputValue = input.value.toLowerCase().trim();
 
-        let inputValue = input.value.toLowerCase().trim()
-        arrayInputValue.push(inputValue)
+        let ul = document.querySelector("ul");
+        ul.innerHTML = "";
+        let arrayPesquisa = [];
 
-        let ul = document.querySelector("ul")
-        ul.innerHTML = ""
-        let arrayPesquisa = []
-        for (let i = 0; i < produtos.length; i++) {
-            let produtosNome = produtos[i].nome.toLowerCase()
-
-            if (inputValue.includes(produtosNome) || produtosNome.includes(arrayInputValue)) {
-                arrayPesquisa.push(produtos[i])
-            }
-            if (inputValue == "") {
-                return criandoCartoes(produtos)
-            }
+        if (inputValue == "") {
+            return renderizarUl(produtos) && filtroParaOSomatorio(produtos);
         }
-        criandoCartoes(arrayPesquisa)
-        filtroParaOSomatorio(arrayPesquisa)
+        produtos.forEach((element) => {
+            if (element.nome.toLowerCase().includes(inputValue)
+                || element.categoria.toLowerCase().includes(inputValue)
+                || element.secao.toLowerCase().includes(inputValue)) {
+                arrayPesquisa.push(element);
+            }
+        })
+        renderizarUl(arrayPesquisa);
     })
 }
-valorPesquisa() 
+valorPesquisa(); 
 
-function bntpesquisa() {
+let btnPesquisa = document.getElementById("btnPesquisar");
+let input = document.querySelector(".campoBuscaPorNome");
 
-    let btnPesquisa = document.getElementById("btnPesquisar")
+btnPesquisa.addEventListener("click", barraDePesquisa);
+input.addEventListener("keyup", barraDePesquisa)
 
-    btnPesquisa.addEventListener("click", function (event) {
+function barraDePesquisa() {
 
-        let ul = document.querySelector("ul")
-        ul.innerHTML = ""
-        let ulDois = document.querySelector("ul")
-        let arrayLetsrasValueInput = []
-        let input = document.querySelector(".campoBuscaPorNome")
-        let inputValue = input.value.toLowerCase().trim()
+    let input = document.querySelector(".campoBuscaPorNome");
 
-        arrayLetsrasValueInput.push(inputValue)
-        console.log(arrayLetsrasValueInput)
-        let arrayBtnPesquisa = []
+    let inputValue = input.value.toLowerCase().trim();
 
-        let bntInputClicado = event.target
+    let ul = document.querySelector("ul");
+    ul.innerHTML = "";
 
-        for (let i = 0; i < produtos.length; i++) {
+    let arrayBtnPesquisa = [];
 
-            let produtosNome = produtos[i].nome.toLowerCase()
-
-            if (bntInputClicado && inputValue.includes(produtosNome) || produtosNome.includes(arrayLetsrasValueInput)) {
-                arrayBtnPesquisa.push(produtos[i])
-            } 
-            if(bntInputClicado && inputValue == "" ) {
-                return ulDois && criandoCartoes(produtos) && filtroParaOSomatorio(produtos)
+    if (inputValue == "") {
+        return renderizarUl(produtos) && filtroParaOSomatorio(produtos);
+    } else {
+        produtos.forEach((element) => {
+            if (element.nome.toLowerCase().includes(inputValue)
+                || element.categoria.toLowerCase().includes(inputValue)
+                || element.secao.toLowerCase().includes(inputValue)) {
+                arrayBtnPesquisa.push(element);
             }
-
-        }
-        criandoCartoes(arrayBtnPesquisa)
-        filtroParaOSomatorio(arrayBtnPesquisa)
-    })
+        })
+    }
+    renderizarUl(arrayBtnPesquisa);
 }
-bntpesquisa()
-
-
-
 
 
