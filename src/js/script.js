@@ -1,8 +1,7 @@
 // seu código aqui
-
 let arrayBtnClicadoCarrinho = []
 
-function renderizarUl(arrayProdutos) {
+const renderizarUl = (arrayProdutos) => {
 
     let ul = document.querySelector("ul");
 
@@ -23,7 +22,14 @@ function renderizarUl(arrayProdutos) {
         pNutrientes.innerText = element.componentes;
 
         let pPreco = document.createElement("p");
-        pPreco.innerText = `R$ ${element.preco}`;
+        let promocaoConvertida = parseFloat(element.precoPromocao)
+
+         if (element.promocao == true) {
+            let promocao = element.preco - promocaoConvertida
+            pPreco.innerText = `R$ ${promocao}`;
+        } else {
+            pPreco.innerText = `R$ ${element.preco}`;
+        }
 
         let button = document.createElement("button");
         button.innerText = "COMPRAR";
@@ -32,6 +38,7 @@ function renderizarUl(arrayProdutos) {
 
         button.addEventListener("click", function (event) {
             produtos.forEach((element) => {
+                console.log(element)
                 if (event.target.id == element.id) {
                     arrayBtnClicadoCarrinho.push(element);
                     ulcarrinhoCompras(arrayBtnClicadoCarrinho);
@@ -42,7 +49,7 @@ function renderizarUl(arrayProdutos) {
         li.append(img, h3, spanSecao, pNutrientes, pPreco, button);
         ul.appendChild(li);
     });
-   
+
     return ul;
 }
 renderizarUl(produtos);
@@ -76,13 +83,15 @@ document.getElementById("botoesContainer").addEventListener("click", (event) => 
     }
 })
 
-function ulcarrinhoCompras(redezinadoUlCarrinho) {
+const ulcarrinhoCompras = (redezinadoUlCarrinho) => {
 
     let ulCarrinho = document.querySelector(".carrinhoDeCompra__ul");
 
-    ulCarrinho.innerHTML = " ";
+    ulCarrinho.innerHTML = "";
 
     redezinadoUlCarrinho.forEach((element) => {
+
+        console.log()
 
         let li = document.createElement("li");
         li.classList.add("carrinhoDeCompra__li");
@@ -97,7 +106,15 @@ function ulcarrinhoCompras(redezinadoUlCarrinho) {
 
         let pProdutopreco = document.createElement("p");
         pProdutopreco.classList.add("carrinhoDeCompra__ValorProduto");
-        pProdutopreco.innerText = element.preco.replace(".", ",");
+
+        let promocao = parseFloat(element.preco - element.precoPromocao)
+
+        if (element.promocao == true) {
+            pProdutopreco.innerText = `R$ ${promocao}`.replace(".", ",");
+
+        } else {
+            pProdutopreco.innerText = `R$ ${element.preco}`.replace(".", ",");
+        }
 
         let button = document.createElement("button");
         button.classList.add("removerProdutos");
@@ -107,36 +124,51 @@ function ulcarrinhoCompras(redezinadoUlCarrinho) {
         button.addEventListener("click", (event) => {
             arrayBtnClicadoCarrinho.forEach((element, i) => {
                 if (event.target.id == element.id) {
+
                     arrayBtnClicadoCarrinho.splice(i, 1);
                     ulcarrinhoCompras(arrayBtnClicadoCarrinho);
+
                     filtroParaOSomatorioCarrinho(arrayBtnClicadoCarrinho);
                 }
             })
         })
+
         li.append(img, pNomeProduto, pProdutopreco, button);
         ulCarrinho.appendChild(li);
     })
 
+    quantidade(arrayBtnClicadoCarrinho.length);
+
     return ulCarrinho
 }
 
-function filtroParaOSomatorioCarrinho(somaFiltro) {
+const quantidade = (lengthUlCarrinhoCompras) => {
+
+    let quantidadeCarrinho = document.querySelector(".carrinhoDeCompra__quantidade")
+
+    return quantidadeCarrinho.innerText = `QUANTIDADE: ${lengthUlCarrinhoCompras} `
+}
+
+const filtroParaOSomatorioCarrinho = (somaFiltro) => {
 
     let spanValor = document.querySelector(".carrinhoDeCompra__valorCompra");
 
     let somatorioDoFiltro = 0;
 
-    for (let i = 0; i < somaFiltro.length; i++) {
+    somaFiltro.forEach((element) => {
+        if (element.promocao == true) {
+            let promocao = parseFloat(element.preco - element.precoPromocao)
+            somatorioDoFiltro += promocao
+        } else {
+            somatorioDoFiltro += parseFloat(element.preco)
+        }
+    })
 
-        let precoProduto = somaFiltro[i].preco;
-        let conversao = parseInt(precoProduto);
-
-        somatorioDoFiltro += conversao;
-    }
-    return spanValor.innerText = `VALOR DA COMPRA: R$ ${somatorioDoFiltro},00`;
+    return spanValor.innerText = `VALOR DA COMPRA: R$ ${somatorioDoFiltro} `;
 }
+filtroParaOSomatorioCarrinho()
 
-function valorPesquisa() {
+const valorPesquisa = () => {
     let input = document.querySelector(".campoBuscaPorNome")
 
     input.addEventListener("keyup", (event) => {
@@ -162,15 +194,12 @@ function valorPesquisa() {
         renderizarUl(arrayPesquisa);
     })
 }
-valorPesquisa(); 
+valorPesquisa();
 
 let btnPesquisa = document.getElementById("btnPesquisar");
 let input = document.querySelector(".campoBuscaPorNome");
 
-btnPesquisa.addEventListener("click", barraDePesquisa);
-input.addEventListener("keyup", barraDePesquisa)
-
-function barraDePesquisa() {
+const barraDePesquisa = () => {
 
     let input = document.querySelector(".campoBuscaPorNome");
 
@@ -194,5 +223,9 @@ function barraDePesquisa() {
     }
     renderizarUl(arrayBtnPesquisa);
 }
+barraDePesquisa()
+
+input.addEventListener("keyup", barraDePesquisa);
+btnPesquisa.addEventListener("click", barraDePesquisa);
 
 
