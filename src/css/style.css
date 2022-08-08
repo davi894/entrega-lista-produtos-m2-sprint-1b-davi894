@@ -167,6 +167,18 @@ main {
     margin-bottom: 30px;
 }
 
+.valorPromocao {
+    background-color: hsl(0, 98%, 55%);
+    border-radius: 1rem;
+    margin-left: 15rem;
+    width: 4rem;
+}
+
+.valorPromocao__p {
+    text-decoration:line-through;
+    color: #FFFFFF;
+}
+
 .containerListaProdutos ul li button {
     border-radius: 8px;
     color: #12b886;

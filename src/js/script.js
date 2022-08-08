@@ -1,7 +1,10 @@
-// seu código aqui
 let arrayBtnClicadoCarrinho = []
 
 const renderizarUl = (arrayProdutos) => {
+
+    {/* <div class="valorPromocao">
+              <p class="valorPromocao__p">R$ 1,99</p>
+            </div> */}
 
     let ul = document.querySelector("ul");
 
@@ -18,13 +21,20 @@ const renderizarUl = (arrayProdutos) => {
         let spanSecao = document.createElement("span");
         spanSecao.innerText = element.secao;
 
+        let divValorPromocao = document.createElement("div")
+        divValorPromocao.classList.add("valorPromocao")
+
+        let pValorPromocao = document.createElement("p")
+        pValorPromocao.classList.add("valorPromocao__p")
+        pValorPromocao.innerText = `R$ ${element.precoPromocao}`
+
         let pNutrientes = document.createElement("p");
         pNutrientes.innerText = element.componentes;
 
         let pPreco = document.createElement("p");
         let promocaoConvertida = parseFloat(element.precoPromocao)
 
-         if (element.promocao == true) {
+        if (element.promocao == true) {
             let promocao = element.preco - promocaoConvertida
             pPreco.innerText = `R$ ${promocao}`;
         } else {
@@ -46,7 +56,8 @@ const renderizarUl = (arrayProdutos) => {
                 }
             })
         })
-        li.append(img, h3, spanSecao, pNutrientes, pPreco, button);
+        divValorPromocao.appendChild(pValorPromocao)
+        li.append(img, h3, spanSecao, divValorPromocao, pNutrientes, pPreco, button);
         ul.appendChild(li);
     });
 
@@ -54,7 +65,9 @@ const renderizarUl = (arrayProdutos) => {
 }
 renderizarUl(produtos);
 
-document.getElementById("botoesContainer").addEventListener("click", (event) => {
+let botoesContainer = document.getElementById("botoesContainer")
+
+botoesContainer.addEventListener("click", (event) => {
     let ul = document.querySelector("ul");
 
     let result = [];
@@ -81,6 +94,7 @@ document.getElementById("botoesContainer").addEventListener("click", (event) => 
         result = produtos.filter(secaoLeite => secaoLeite.categoria == 'Leite');
         renderizarUl(result);
     }
+    filtragemUlPrincipal(result)
 })
 
 const ulcarrinhoCompras = (redezinadoUlCarrinho) => {
@@ -90,8 +104,6 @@ const ulcarrinhoCompras = (redezinadoUlCarrinho) => {
     ulCarrinho.innerHTML = "";
 
     redezinadoUlCarrinho.forEach((element) => {
-
-        console.log()
 
         let li = document.createElement("li");
         li.classList.add("carrinhoDeCompra__li");
@@ -127,12 +139,10 @@ const ulcarrinhoCompras = (redezinadoUlCarrinho) => {
 
                     arrayBtnClicadoCarrinho.splice(i, 1);
                     ulcarrinhoCompras(arrayBtnClicadoCarrinho);
-
                     filtroParaOSomatorioCarrinho(arrayBtnClicadoCarrinho);
                 }
             })
         })
-
         li.append(img, pNomeProduto, pProdutopreco, button);
         ulCarrinho.appendChild(li);
     })
@@ -141,6 +151,85 @@ const ulcarrinhoCompras = (redezinadoUlCarrinho) => {
 
     return ulCarrinho
 }
+
+const barraDePesquisaInput = () => {
+    let input = document.querySelector(".campoBuscaPorNome")
+
+    input.addEventListener("keyup", (event) => {
+
+        let input = event.target;
+
+        let inputValue = input.value.toLowerCase().trim();
+
+        let ul = document.querySelector("ul");
+        ul.innerHTML = "";
+        let arrayPesquisa = [];
+
+        if (inputValue == "") {
+            return renderizarUl(produtos) && filtragemUlPrincipal(produtos);
+        }
+        produtos.forEach((element) => {
+            if (element.nome.toLowerCase().includes(inputValue)
+                || element.categoria.toLowerCase().includes(inputValue)
+                || element.secao.toLowerCase().includes(inputValue)) {
+                arrayPesquisa.push(element);
+            }
+        })
+        renderizarUl(arrayPesquisa);
+        filtragemUlPrincipal(arrayPesquisa)
+    })
+}
+barraDePesquisaInput();
+
+const barraDePesquisaBtn = () => {
+
+    let btnPesquisaProduto = document.querySelector("#btnPesquisar");
+
+    let input = document.querySelector(".campoBuscaPorNome")
+
+    btnPesquisaProduto.addEventListener("click", () => {
+
+        let ul = document.querySelector("ul");
+        ul.innerHTML = "";
+
+        let inputValue = input.value.toLowerCase().trim();
+
+        let arrayBtnPesquisa = [];
+
+        if (inputValue == "") {
+            return renderizarUl(produtos) && filtragemUlPrincipal(produtos);
+        } else {
+            produtos.forEach((element) => {
+                if (element.nome.toLowerCase().includes(inputValue)
+                    || element.categoria.toLowerCase().includes(inputValue)
+                    || element.secao.toLowerCase().includes(inputValue)) {
+                    arrayBtnPesquisa.push(element);
+                }
+            })
+        }
+        renderizarUl(arrayBtnPesquisa);
+        filtragemUlPrincipal(arrayBtnPesquisa)
+    })
+}
+barraDePesquisaBtn();
+
+const filtragemUlPrincipal = (somaFiltro) => {
+
+    let spanValor = document.querySelector("#totalDacompra");
+
+    let somatorioDoFiltro = 0;
+
+    somaFiltro.forEach((element) => {
+        if (element.promocao == true) {
+            let promocao = parseFloat(element.preco - element.precoPromocao)
+            somatorioDoFiltro += promocao
+        } else {
+            somatorioDoFiltro += parseFloat(element.preco)
+        }
+    })
+    return spanValor.innerText = `R$ ${somatorioDoFiltro}`;
+}
+filtragemUlPrincipal(produtos)
 
 const quantidade = (lengthUlCarrinhoCompras) => {
 
@@ -167,65 +256,3 @@ const filtroParaOSomatorioCarrinho = (somaFiltro) => {
     return spanValor.innerText = `VALOR DA COMPRA: R$ ${somatorioDoFiltro} `;
 }
 filtroParaOSomatorioCarrinho()
-
-const valorPesquisa = () => {
-    let input = document.querySelector(".campoBuscaPorNome")
-
-    input.addEventListener("keyup", (event) => {
-
-        let input = event.target;
-
-        let inputValue = input.value.toLowerCase().trim();
-
-        let ul = document.querySelector("ul");
-        ul.innerHTML = "";
-        let arrayPesquisa = [];
-
-        if (inputValue == "") {
-            return renderizarUl(produtos) && filtroParaOSomatorio(produtos);
-        }
-        produtos.forEach((element) => {
-            if (element.nome.toLowerCase().includes(inputValue)
-                || element.categoria.toLowerCase().includes(inputValue)
-                || element.secao.toLowerCase().includes(inputValue)) {
-                arrayPesquisa.push(element);
-            }
-        })
-        renderizarUl(arrayPesquisa);
-    })
-}
-valorPesquisa();
-
-let btnPesquisa = document.getElementById("btnPesquisar");
-let input = document.querySelector(".campoBuscaPorNome");
-
-const barraDePesquisa = () => {
-
-    let input = document.querySelector(".campoBuscaPorNome");
-
-    let inputValue = input.value.toLowerCase().trim();
-
-    let ul = document.querySelector("ul");
-    ul.innerHTML = "";
-
-    let arrayBtnPesquisa = [];
-
-    if (inputValue == "") {
-        return renderizarUl(produtos) && filtroParaOSomatorio(produtos);
-    } else {
-        produtos.forEach((element) => {
-            if (element.nome.toLowerCase().includes(inputValue)
-                || element.categoria.toLowerCase().includes(inputValue)
-                || element.secao.toLowerCase().includes(inputValue)) {
-                arrayBtnPesquisa.push(element);
-            }
-        })
-    }
-    renderizarUl(arrayBtnPesquisa);
-}
-barraDePesquisa()
-
-input.addEventListener("keyup", barraDePesquisa);
-btnPesquisa.addEventListener("click", barraDePesquisa);
-
-
