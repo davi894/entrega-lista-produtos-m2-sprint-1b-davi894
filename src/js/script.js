@@ -2,10 +2,6 @@ let arrayBtnClicadoCarrinho = []
 
 const renderizarUl = (arrayProdutos) => {
 
-    {/* <div class="valorPromocao">
-              <p class="valorPromocao__p">R$ 1,99</p>
-            </div> */}
-
     let ul = document.querySelector("ul");
 
     arrayProdutos.forEach(element => {

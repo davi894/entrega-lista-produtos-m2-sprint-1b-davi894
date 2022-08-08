@@ -37,7 +37,7 @@ main {
 #botoesContainer button,
 .containerBuscaPorNome input,
 .containerBuscaPorNome button {
-    width: 16rem;
+    width: 11rem;
     height: 4rem;
     font-size: 1.2rem;
 }
@@ -111,7 +111,7 @@ main {
     border: 1px solid #FFFFFF;
     box-shadow: 0px 4px 30px -10px rgb(0 0 0 / 25%);
     border-radius: 8px;
-    font-size: 3rem;
+    font-size: 2rem;
     padding: 10px 20px;
 }
 
@@ -170,12 +170,11 @@ main {
 .valorPromocao {
     background-color: hsl(0, 98%, 55%);
     border-radius: 1rem;
-    margin-left: 15rem;
     width: 4rem;
 }
 
 .valorPromocao__p {
-    text-decoration:line-through;
+    text-decoration: line-through;
     color: #FFFFFF;
 }
 
@@ -206,14 +205,13 @@ main {
 }
 
 .containerListaProdutos ul li p {
-    font-size: 14px;
-    font-weight: 400;
-    margin: 10px 0;
+    font-size: 0.7rem;
+    margin: 10px 0px;
     font-weight: bold;
 }
 
 .containerListaProdutos ul li span {
-    font-size: 23px;
+    font-size: 12px;
     font-weight: 500;
     margin-top: 10px;
     display: inline-block;
@@ -234,12 +232,17 @@ main {
     padding: 10px;
     font-style: normal;
     font-weight: 500;
-    font-size: 40px;
+    font-size: 2rem;
 }
 
 .containerListaProdutos ul li li {
-    margin: 0;
-    width: 100%;
+    width: 14rem;
+    border-radius: 8px;
+    transition: all 0.1s ease-in-out 0s;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .containerListaProdutos ul li button,
@@ -274,7 +277,7 @@ main {
 .carrinhoDeCompra {
     display: flex;
     flex-direction: column;
-    width: 33rem;
+    width: 26rem;
 }
 
 .carrinhoDeCompra__titulo,
@@ -323,10 +326,6 @@ main {
 
     main {
         margin: 0;
-    }
-
-    .containerBuscaPorNome {
-        width: 334px;
     }
 }
 
@@ -431,7 +430,7 @@ main {
 
     .priceContainer,
     #totalDacompra {
-        font-size: 2rem;
+        font-size: 1rem;
     }
 
     .containerVitrine {
@@ -440,7 +439,7 @@ main {
     }
 
     .containerListaProdutos ul li {
-        width: 282px;
+        width: 7rem;
     }
 }
 
@@ -448,8 +447,10 @@ main {
 
     #botoesContainer {
         overflow-x: auto;
-        width: 28rem;
-        margin: 0 auto;
         width: 56%;
+    }
+
+    .containerListaProdutos ul li {
+        width: 13rem;
     }
 }
