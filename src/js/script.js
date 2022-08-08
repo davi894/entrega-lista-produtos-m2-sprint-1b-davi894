@@ -28,6 +28,10 @@ const renderizarUl = (arrayProdutos) => {
         pValorPromocao.classList.add("valorPromocao__p")
         pValorPromocao.innerText = `R$ ${element.precoPromocao}`
 
+        if (!element.promocao == true) {
+            pValorPromocao.innerText = `R$ 0`
+        }
+
         let pNutrientes = document.createElement("p");
         pNutrientes.innerText = element.componentes;
 
