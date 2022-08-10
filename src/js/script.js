@@ -4,7 +4,7 @@ const renderizarUl = (arrayProdutos) => {
 
     let ul = document.querySelector("ul");
 
-    arrayProdutos.forEach(element => {
+    arrayProdutos.forEach((element, i) => {
 
         let li = document.createElement("li");
 
@@ -53,6 +53,7 @@ const renderizarUl = (arrayProdutos) => {
                     arrayBtnClicadoCarrinho.push(element);
                     ulcarrinhoCompras(arrayBtnClicadoCarrinho);
                     filtroParaOSomatorioCarrinho(arrayBtnClicadoCarrinho);
+
                 }
             })
         })
@@ -60,7 +61,6 @@ const renderizarUl = (arrayProdutos) => {
         li.append(img, h3, spanSecao, divValorPromocao, pNutrientes, pPreco, button);
         ul.appendChild(li);
     });
-
     return ul;
 }
 renderizarUl(produtos);
@@ -103,7 +103,7 @@ const ulcarrinhoCompras = (redezinadoUlCarrinho) => {
 
     ulCarrinho.innerHTML = "";
 
-    redezinadoUlCarrinho.forEach((element) => {
+    redezinadoUlCarrinho.forEach((element, i) => {
 
         let li = document.createElement("li");
         li.classList.add("carrinhoDeCompra__li");
@@ -134,21 +134,16 @@ const ulcarrinhoCompras = (redezinadoUlCarrinho) => {
         button.id = element.id;
 
         button.addEventListener("click", (event) => {
-            arrayBtnClicadoCarrinho.forEach((element, i) => {
-                if (event.target.id == element.id) {
-
-                    arrayBtnClicadoCarrinho.splice(i, 1);
-                    ulcarrinhoCompras(arrayBtnClicadoCarrinho);
-                    filtroParaOSomatorioCarrinho(arrayBtnClicadoCarrinho);
-                }
-            })
+            if (event.target.id == element.id) {
+                arrayBtnClicadoCarrinho.splice(0, 1)
+                ulcarrinhoCompras(arrayBtnClicadoCarrinho);
+                filtroParaOSomatorioCarrinho(arrayBtnClicadoCarrinho);
+            }
         })
         li.append(img, pNomeProduto, pProdutopreco, button);
         ulCarrinho.appendChild(li);
     })
-
     quantidade(arrayBtnClicadoCarrinho.length);
-
     return ulCarrinho
 }
 
@@ -229,7 +224,7 @@ const filtragemUlPrincipal = (somaFiltro) => {
     })
     return spanValor.innerText = `R$ ${somatorioDoFiltro}`;
 }
-filtragemUlPrincipal(produtos)
+filtragemUlPrincipal(produtos);
 
 const quantidade = (lengthUlCarrinhoCompras) => {
 
